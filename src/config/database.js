@@ -6,7 +6,7 @@ module.exports = {
     database: 'gabrielpiss',
     define: {
         // acressentando o timestamps para armazenar
-        // que hora fio criado e a hora que foi atualizado 
+        // que hora foi criado e o momento que foi atualizado 
         // o registro
         timestamps: true, 
         underscored: true,
