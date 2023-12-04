@@ -1,9 +1,9 @@
 const express = require('express');
 
+const UserController = require('./controllers/UserController');
+
 const router = express.Router();
 
-router.get('/', (request, response) => {
-    return response.send('olá mundo!')
-});
+router.get('/users', UserController.index);
 
 module.exports = router;
