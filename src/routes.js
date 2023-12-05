@@ -2,6 +2,7 @@ const express = require('express');
 
 const UserController = require('./controllers/UserController');
 const AddressController = require('./controllers/AddressController');
+const CourseController = require('./controllers/CourseController');
 
 const authMiddleware = require('./middlewares/auth');
 
@@ -22,5 +23,8 @@ router.post('/users/:user_id/address', AddressController.store);
 router.put('/users/:id/address', AddressController.update);
 router.delete('/users/:id/address', AddressController.delete);
 
+router.get('/users/:user_id/courses', CourseController.index);
+router.post('/users/:user_id/courses', CourseController.store);
+router.delete('/users/:user_id/courses', CourseController.delete);
 
 module.exports = router;
