@@ -2,9 +2,11 @@ const express = require('express');
 
 const UserController = require('./controllers/UserController');
 
+const authMiddleware = require('./middlewares/auth');
+
 const router = express.Router();
 
-router.get('/users', UserController.index);
+router.get('/users', authMiddleware, UserController.index);
 
 router.post('/users', UserController.store);
 
