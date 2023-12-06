@@ -7,7 +7,7 @@ class User extends Model {
             name: DataTypes.STRING,
             password: DataTypes.STRING,
             email: DataTypes.STRING,
-            islogged: DataTypes.BOOLEAN
+            isLogged: DataTypes.BOOLEAN
         }, { 
             sequelize,
             hooks: {
