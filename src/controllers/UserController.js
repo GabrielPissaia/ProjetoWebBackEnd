@@ -14,7 +14,7 @@ function generateToken(params = {}) {
 module.exports = {
 
     async login(req, res) {
-        const { password, email, islogged } = req.body;
+        const { password, email, isLogged } = req.body;
 
         const user = await User.findOne({ where: { email } });
 
@@ -35,7 +35,7 @@ module.exports = {
         const user_id = user.id;
 
         await User.update({
-            islogged
+            isLogged
         }, {
             where: {
                 id: user_id

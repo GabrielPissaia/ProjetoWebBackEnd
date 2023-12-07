@@ -16,4 +16,8 @@ Address.associate(connection.models);
 User.associate(connection.models);
 Course.associate(connection.models)
 
+connection.authenticate()
+.then(() => connection.sync())
+.catch((error) => console.log(error));
+
 module.exports = connection;
