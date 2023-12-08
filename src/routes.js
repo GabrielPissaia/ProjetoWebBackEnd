@@ -16,7 +16,11 @@ router.put('/users/:user_id', UserController.update);
 router.delete('/users/:user_id', UserController.delete);
 router.post('/users/login', UserController.login);
 
+router.get('/admins', AdminController.getAllAdmins);
 router.post('/admins', AdminController.store);
+router.delete('/admins/:adminId', AdminController.deleteAdmin);
+router.put('/admins/:adminId', AdminController.updateAdmin);
+router.delete('/admins/:userId/users/:userId', AdminController.deleteUser);
 
 router.use(authMiddleware);
 

@@ -14,7 +14,8 @@ module.exports = {
         const { name, password, email } = req.body;
 
         try {
-            const admin = await Admin.create({ name, password, email });
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const admin = await Admin.create({ name, password: hashedPassword, email });
             const token = generateToken({ id: admin.id });
 
             return res.status(200).json({
@@ -27,4 +28,92 @@ module.exports = {
             return res.status(400).json({ error: err.message });
         }
     },
+
+    async getAllAdmins(req, res) {
+        try {
+            const admins = await Admin.findAll();
+            return res.status(200).json({
+                status: 1,
+                message: 'Lista de todos os Admins',
+                admins,
+            });
+        } catch (error) {
+            return res.status(500).json({
+                status: 0,
+                message: 'Erro ao recuperar a lista de Admins',
+                error: error.message,
+            });
+        }
+    },
+
+    async deleteUser(req, res) {
+        const { userId } = req.params;
+
+        await Admin.deleteUser(userId);
+
+        return res.status(200).json({
+            status: 1,
+            message: 'Usuário deletado com sucesso pelo Admin!',
+        });
+    },
+
+    async updateAdmin(req, res) {
+        const { adminId } = req.params;
+        const { name, password, email } = req.body;
+
+        try {
+            const admin = await Admin.findByPk(adminId);
+
+            if (!admin) {
+                return res.status(404).json({
+                    status: 0,
+                    message: 'Admin não encontrado!',
+                });
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+            await admin.update({ name, password: hashedPassword, email });
+
+            return res.status(200).json({
+                status: 1,
+                message: 'Admin atualizado com sucesso!',
+                admin,
+            });
+        } catch (error) {
+            return res.status(500).json({
+                status: 0,
+                message: 'Erro ao atualizar o Admin',
+                error: error.message,
+            });
+        }
+    },
+
+    async deleteAdmin(req, res) {
+        const { adminId } = req.params;
+    
+        try {
+            const admin = await Admin.findByPk(adminId);
+    
+            if (!admin) {
+                return res.status(404).json({
+                    status: 0,
+                    message: 'Admin não encontrado!',
+                });
+            }
+    
+            await admin.destroy();
+    
+            return res.status(200).json({
+                status: 1,
+                message: 'Admin deletado com sucesso!',
+            });
+        } catch (error) {
+            return res.status(500).json({
+                status: 0,
+                message: 'Erro ao deletar o Admin',
+                error: error.message,
+            });
+        }
+    }
+    
 };
