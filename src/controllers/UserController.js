@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 
 const authConfig = require('../config/auth')
 
+const PAGE_SIZE = 5
+
 function generateToken(params = {}) {
     return jwt.sign(params, authConfig.secret, {
         expiresIn: 78300,
@@ -55,15 +57,29 @@ module.exports = {
     },
 
     async index(req, res) {
+        const { page = 0 } = req.query;
     
-        const users = await User.findAll();
-
-        if (users == '' || users == null) {
-            return res.status(200).send({ message: 'Sem usuario cadastrado'});
+        try {
+            const users = await User.findAndCountAll({
+                limit: PAGE_SIZE,
+                offset: page * PAGE_SIZE,
+            });
+    
+            if (users.count === 0) {
+                return res.status(200).json({ message: 'Sem usuários cadastrados' });
+            }
+    
+            const totalPages = Math.ceil(users.count / PAGE_SIZE);
+    
+            return res.status(200).json({
+                users: users.rows,
+                totalCount: users.count,
+                totalPages,
+                currentPage: page,
+            });
+        } catch (error) {
+            return res.status(500).json({ error: 'Erro ao buscar usuários' });
         }
-
-        return res.status(200).send({ users });
-
     },
 
     async store(req, res) {
