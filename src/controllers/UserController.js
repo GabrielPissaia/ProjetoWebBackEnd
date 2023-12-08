@@ -2,7 +2,7 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 
 const jwt = require('jsonwebtoken');
-
+const Admin = require('../models/admin')
 const authConfig = require('../config/auth')
 
 const PAGE_SIZE = 5
@@ -84,18 +84,36 @@ module.exports = {
 
     async store(req, res) {
 
-        const { name, password, email } = req.body;
+        const { name, password, email, isAdmin } = req.body;
+        
+        if (isAdmin) {
+            try {
+                const admin = await Admin.create({ name, password, email });
+                const token = generateToken({ id: admin.id });
 
-        const user = await User.create({ name, password, email });
+                return res.status(200).json({
+                    status: 1,
+                    message: 'Admin cadastrado com sucesso!',
+                    admin,
+                    token
+                });
+            } catch (err) {
+                return res.status(400).json({ error: err.message });
+            }
+        }
 
-        const token = generateToken({ id: user.id });
+        try {
+            const user = await User.create({ name, password, email });
+            const token = generateToken({ id: user.id });
 
-        return res.status(200).send({
-            status: 1,
-            menssage: 'usuario cadastrado com sucesso!',
-            user, token
-        });
-
+            return res.status(200).send({
+                status: 1,
+                menssage: 'usuario cadastrado com sucesso!',
+                user, token
+            });
+        } catch (err) {
+        return res.status(400).json({ error: err.message });
+        }
     },
 
     async update(req, res) {

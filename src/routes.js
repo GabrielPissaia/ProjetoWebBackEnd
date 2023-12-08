@@ -3,7 +3,7 @@ const express = require('express');
 const UserController = require('./controllers/UserController');
 const AddressController = require('./controllers/AddressController');
 const CourseController = require('./controllers/CourseController');
-
+const AdminController = require('./controllers/AdminController');
 const authMiddleware = require('./middlewares/auth');
 
 const router = express.Router();
@@ -15,6 +15,8 @@ router.post('/users', UserController.store);
 router.put('/users/:user_id', UserController.update);
 router.delete('/users/:user_id', UserController.delete);
 router.post('/users/login', UserController.login);
+
+router.post('/admins', AdminController.store);
 
 router.use(authMiddleware);
 
