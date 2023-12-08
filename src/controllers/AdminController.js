@@ -47,14 +47,31 @@ module.exports = {
     },
 
     async deleteUser(req, res) {
-        const { userId } = req.params;
+        const { adminId, userId } = req.params;
 
-        await Admin.deleteUser(userId);
+        try {
+            const admin = await Admin.findByPk(adminId);
 
-        return res.status(200).json({
-            status: 1,
-            message: 'Usuário deletado com sucesso pelo Admin!',
-        });
+            if (!admin) {
+                return res.status(404).json({
+                    status: 0,
+                    message: 'Admin não encontrado!',
+                });
+            }
+
+            await Admin.deleteUser(adminId, userId);
+
+            return res.status(200).json({
+                status: 1,
+                message: 'Usuário deletado com sucesso pelo Admin!',
+            });
+        } catch (error) {
+            return res.status(500).json({
+                status: 0,
+                message: 'Erro ao deletar o usuário pelo Admin',
+                error: error.message,
+            });
+        }
     },
 
     async updateAdmin(req, res) {

@@ -20,7 +20,7 @@ router.get('/admins', AdminController.getAllAdmins);
 router.post('/admins', AdminController.store);
 router.delete('/admins/:adminId', AdminController.deleteAdmin);
 router.put('/admins/:adminId', AdminController.updateAdmin);
-router.delete('/admins/:userId/users/:userId', AdminController.deleteUser);
+router.delete('/admins/:adminId/users/:userId', AdminController.deleteUser);
 
 router.use(authMiddleware);
 

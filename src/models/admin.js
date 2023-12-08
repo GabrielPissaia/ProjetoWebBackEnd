@@ -10,7 +10,7 @@ class Admin extends Model {
         }, { sequelize });
     }
     
-    static async deleteUser(userId) {
+    static async deleteUser(adminId, userId) {
         await this.sequelize.models.User.destroy({ where: { id: userId } });
     }
 
