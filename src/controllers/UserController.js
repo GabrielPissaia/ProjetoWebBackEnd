@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const Admin = require('../models/admin');
 const authConfig = require('../config/auth');
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 2;
 
 /**
  * @swagger
