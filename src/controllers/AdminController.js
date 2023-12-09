@@ -9,7 +9,63 @@ function generateToken(params = {}) {
     });
 }
 
+/**
+ * @swagger
+ * tags:
+ *   name: Admin
+ *   description: Endpoints relacionados a administradores
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Admin:
+ *       type: object
+ *       required:
+ *         - name
+ *         - password
+ *         - email
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: Nome do administrador
+ *         password:
+ *           type: string
+ *           description: Senha do administrador
+ *         email:
+ *           type: string
+ *           description: Email do administrador
+ *       example:
+ *         name: Admin1
+ *         password: senha123
+ *         email: admin1@example.com
+ */
+
 module.exports = {
+
+    /**
+     * @swagger
+     * /admins:
+     *   post:
+     *     summary: Cadastra um novo administrador
+     *     tags: [Admin]
+     *     requestBody:
+     *       description: Dados do administrador a ser cadastrado
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             $ref: '#/components/schemas/Admin'
+     *     responses:
+     *       200:
+     *         description: OK
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/Admin'
+     */
+
     async store(req, res) {
         const { name, password, email } = req.body;
 
@@ -29,6 +85,23 @@ module.exports = {
         }
     },
 
+    /**
+     * @swagger
+     * /admins:
+     *   get:
+     *     summary: Retorna a lista de todos os administradores
+     *     tags: [Admin]
+     *     responses:
+     *       200:
+     *         description: OK
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: array
+     *               items:
+     *                 $ref: '#/components/schemas/Admin'
+     */
+
     async getAllAdmins(req, res) {
         try {
             const admins = await Admin.findAll();
@@ -45,6 +118,49 @@ module.exports = {
             });
         }
     },
+
+    /**
+     * @swagger
+     * /admins/{adminId}/users/{userId}:
+     *   delete:
+     *     summary: Deleta um usuário pelo ID, realizado por um administrador
+     *     tags: [Admin]
+     *     parameters:
+     *       - in: path
+     *         name: adminId
+     *         required: true
+     *         description: ID do administrador
+     *         schema:
+     *           type: integer
+     *       - in: path
+     *         name: userId
+     *         required: true
+     *         description: ID do usuário
+     *         schema:
+     *           type: integer
+     *     responses:
+     *       200:
+     *         description: OK
+     *         content:
+     *           application/json:
+     *             example:
+     *               status: 1
+     *               message: Usuário deletado com sucesso pelo Admin!
+     *       404:
+     *         description: Admin não encontrado
+     *         content:
+     *           application/json:
+     *             example:
+     *               status: 0
+     *               message: Admin não encontrado!
+     *       500:
+     *         description: Erro ao deletar o usuário pelo Admin
+     *         content:
+     *           application/json:
+     *             example:
+     *               status: 0
+     *               message: Erro ao deletar o usuário pelo Admin
+     */
 
     async deleteUser(req, res) {
         const { adminId, userId } = req.params;
@@ -73,6 +189,50 @@ module.exports = {
             });
         }
     },
+
+     /**
+     * @swagger
+     * /admins/{adminId}:
+     *   put:
+     *     summary: Atualiza um administrador pelo ID
+     *     tags: [Admin]
+     *     parameters:
+     *       - in: path
+     *         name: adminId
+     *         required: true
+     *         description: ID do administrador
+     *         schema:
+     *           type: integer
+     *     requestBody:
+     *       description: Dados do administrador a serem atualizados
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             $ref: '#/components/schemas/Admin'
+     *     responses:
+     *       200:
+     *         description: OK
+     *         content:
+     *           application/json:
+     *             example:
+     *               status: 1
+     *               message: Admin atualizado com sucesso!
+     *       404:
+     *         description: Admin não encontrado
+     *         content:
+     *           application/json:
+     *             example:
+     *               status: 0
+     *               message: Admin não encontrado!
+     *       500:
+     *         description: Erro ao atualizar o Admin
+     *         content:
+     *           application/json:
+     *             example:
+     *               status: 0
+     *               message: Erro ao atualizar o Admin
+     */
 
     async updateAdmin(req, res) {
         const { adminId } = req.params;
@@ -105,6 +265,43 @@ module.exports = {
         }
     },
 
+     /**
+     * @swagger
+     * /admins/{adminId}:
+     *   delete:
+     *     summary: Deleta um administrador pelo ID
+     *     tags: [Admin]
+     *     parameters:
+     *       - in: path
+     *         name: adminId
+     *         required: true
+     *         description: ID do administrador
+     *         schema:
+     *           type: integer
+     *     responses:
+     *       200:
+     *         description: OK
+     *         content:
+     *           application/json:
+     *             example:
+     *               status: 1
+     *               message: Admin deletado com sucesso!
+     *       404:
+     *         description: Admin não encontrado
+     *         content:
+     *           application/json:
+     *             example:
+     *               status: 0
+     *               message: Admin não encontrado!
+     *       500:
+     *         description: Erro ao deletar o Admin
+     *         content:
+     *           application/json:
+     *             example:
+     *               status: 0
+     *               message: Erro ao deletar o Admin
+     */
+    
     async deleteAdmin(req, res) {
         const { adminId } = req.params;
     

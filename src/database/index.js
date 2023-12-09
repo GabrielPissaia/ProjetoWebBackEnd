@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-
+const bcrypt = require('bcryptjs');
 const dbConfig = require('../config/database.js');
 
 const Admin = require('../models/admin.js')
@@ -25,14 +25,14 @@ connection.authenticate()
     return connection.sync({ force: true })
       .then(() => {
         return User.bulkCreate([
-          { name: 'Gabriel', password: '000', email: 'Gabriel@example.com' },
-          { name: 'Camilla', password: '000', email: 'Camilla@example.com' },
-          { name: 'Monique', password: '000', email: 'Monique@example.com' }
+          { name: 'Gabriel', password: bcrypt.hashSync('000', 10), email: 'Gabriel@example.com' },
+          { name: 'Camilla', password: bcrypt.hashSync('000', 10), email: 'Camilla@example.com' },
+          { name: 'Monique', password: bcrypt.hashSync('000', 10), email: 'Monique@example.com' }
         ]);
       })
       .then(() => {
         return Admin.bulkCreate([
-          { name: 'Chefe', password: '111', email: 'Chefe@example.com' }
+          { name: 'Chefe', password: bcrypt.hashSync('000', 10), email: 'Chefe@example.com' }
         ]);
       });
   })
