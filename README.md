@@ -18,6 +18,7 @@ Autenticação e autorização de rotas utilizando JWT (JSON Web Token)
 Conexão com um banco de dados MySql utilizando Sequelize
 
 **Tecnologias utilizadas**
+
 Node.js
 Express.js
 MySql
